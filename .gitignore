@@ -1,1 +1,9 @@
-/**/*.md
+/target/
+target/*
+.project
+.settings
+.classpath
+.metadata/
+.idea/
+plugin/
+*.iml
