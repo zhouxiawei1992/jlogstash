@@ -44,6 +44,7 @@ import java.util.Map;
  */
 public class AssemblyPipeline {
 
+<<<<<<< HEAD
     private static Logger logger = LoggerFactory.getLogger(AssemblyPipeline.class);
 
     private InputQueueList initInputQueueList;
@@ -82,4 +83,42 @@ public class AssemblyPipeline {
         ShutDownHook shutDownHook = new ShutDownHook(initInputQueueList, initOutputQueueList, baseInputs, allBaseOutputs);
         shutDownHook.addShutDownHook();
     }
+=======
+	private List<BaseInput> baseInputs;
+	
+	private List<BaseOutput> allBaseOutputs = Lists.newCopyOnWriteArrayList();
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public void assemblyPipeline() throws Exception{
+			logger.debug("load config start ...");
+			Map configs = new YamlConfig().parse(CmdLineParams.getConfigFilePath());
+			logger.debug(configs.toString());
+			logger.debug("initInputQueueList start ...");
+			initInputQueueList = InputQueueList.getInputQueueListInstance(CmdLineParams.getFilterWork(), CmdLineParams.getInputQueueSize());
+			List<Map> inputs = (List<Map>) configs.get("inputs");
+			if(inputs==null||inputs.size()==0){
+				throw new LogstashException("input plugin is not empty");
+			}
+			List<Map> outputs = (List<Map>) configs.get("outputs");
+			if(outputs==null||outputs.size()==0){
+				throw new LogstashException("output plugin is not empty");
+			}
+		    List<Map> filters = (List<Map>) configs.get("filters");
+			baseInputs =InputFactory.getBatchInstance(inputs,initInputQueueList);
+			InputThread.initInputThread(baseInputs);
+		    if(filters!=null&&filters.size()>0){
+				initOutputQueueList = OutPutQueueList.getOutPutQueueListInstance(CmdLineParams.getOutputWork(), CmdLineParams.getOutputQueueSize());
+				FilterThread.initFilterThread(filters,initInputQueueList,initOutputQueueList);
+				OutputThread.initOutPutThread(outputs,initOutputQueueList,allBaseOutputs);
+		    }else{
+				OutputThread.initOutPutThread(outputs,initInputQueueList,allBaseOutputs);
+		    }
+			addShutDownHook();
+	}
+	
+	private void addShutDownHook(){
+		ShutDownHook shutDownHook = new ShutDownHook(initInputQueueList,initOutputQueueList,baseInputs,allBaseOutputs);
+		shutDownHook.addShutDownHook();
+	}
+>>>>>>> 00e731fd98739e416df07ea5a5821cdd45478950
 }

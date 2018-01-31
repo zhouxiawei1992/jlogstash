@@ -1,4 +1,5 @@
 inputs:
+<<<<<<< HEAD
     # - PlainFile: 
     #     path:
     #       - /tmp/file/^file.*\.txt$
@@ -168,3 +169,55 @@ outputs:
 # #        format: ${HOSTNAME} ${appname} [${user_token} type=${logtype} tag=${logtag}] ${path} jlogstash/$${timestamp}/$${message}
 
 
+=======
+    - File:
+        path: ["/Users/sishuyss/Desktop/new_access_1g.logai"]
+        sinceDbPath: /Users/sishuyss/Desktop/sincedb1.yaml
+        startPosition: beginning
+        addFields: {"logtype":"nginx_access_log","tenant_id":4}
+    - File:
+        path: ["/Users/sishuyss/Desktop/new_access_1g.logag"]
+        sinceDbPath: /Users/sishuyss/Desktop/sincedb2.yaml
+        startPosition: beginning
+        addFields: {"logtype":"nginx_access_log","tenant_id":4}
+    # - File:
+    #     path: ["/Users/sishuyss/Desktop/new_access_1g.logae"]
+    #     sinceDbPath: /Users/sishuyss/Desktop/sincedb3.yaml
+    #     startPosition: beginning
+    #     addFields: {"logtype":"nginx_access_log","tenant_id":4}
+    # - File:
+    #     path: ["/Users/sishuyss/Desktop/new_access_1g.logaf"]
+    #     sinceDbPath: /Users/sishuyss/Desktop/sincedb4.yaml
+    #     startPosition: beginning
+    #     addFields: {"logtype":"nginx_access_log","tenant_id":4}
+    # - File:
+    #     path: ["/Users/sishuyss/Desktop/new_access_1g.logad"]
+    #     sinceDbPath: /Users/sishuyss/Desktop/sincedb5.yaml
+    #     startPosition: beginning
+    #     addFields: {"logtype":"nginx_access_log","tenant_id":4}                                
+
+filters:
+    # - dtstack.jdtlogparser.DtLogParser:
+    #     apiServer: logapi.dtstack.com
+    #     useSsl: true
+    #     isRedis: false
+outputs:
+    - Performance:
+        path: /Users/sishuyss/Desktop/performance.txt
+    - File:
+        path: /Users/sishuyss/Desktop/disruprot.txt
+
+#    - Elasticsearch:
+#        hosts: ["172.16.1.185:9300","172.16.1.188:9300"]
+#        hosts: ["127.0.0.1:9300"]
+#        indexTimezone: Asia/Shanghai
+#        cluster: tes_dtstack
+#        concurrentRequests: 2
+#        index: 'dtlog-%{tenant_id}-%{+YYYY.MM.dd}'
+#        documentType: logs # default logs
+#        bulkActions: 40000 #default 20000
+#        bulkSize: 30 # default 15 MB
+#        flushInterval: 3 # default 10 seconds
+#        timezone: "Asia/Shanghai" # defaut UTC 时区. 只用于生成索引名字的字符串格式化
+#        sniff: false #default true    
+>>>>>>> 00e731fd98739e416df07ea5a5821cdd45478950
